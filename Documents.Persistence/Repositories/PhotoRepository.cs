@@ -5,14 +5,9 @@ using Documents.Domain.Entities.EntitiesContentData;
 using Documents.Domain.Entities.EntitiesLocationData;
 using Documents.Domain.Interfaces.Repositories;
 using Documents.Persistence.Contexts;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Documents.Domain.DTOs.Photos;
 
 namespace Documents.Persistence.Repositories
 {
@@ -50,39 +45,41 @@ namespace Documents.Persistence.Repositories
             return files;
         }
 
-        public async Task<BlobResponse> UploadAsync(IFormFile blob, CancellationToken cancellationToken)
+        public async Task<BlobResponse> UploadAsync(PhotoDto blob, CancellationToken cancellationToken)
         {
             BlobResponse response = new();
             BlobContainerClient container = new BlobContainerClient(_storageConnectionString, _storageContainerName);
 
             try
             {
-                BlobClient client = container.GetBlobClient(blob.FileName);
+                //BlobClient client = container.GetBlobClient(blob.PhotoName);
+                //using MemoryStream data = new MemoryStream(blob.PhotoData);
 
-                await using (Stream? data = blob.OpenReadStream())
-                {
-                    await client.UploadAsync(data);
-                }
+                //await using (data)
+                //{
+                //    await client.UploadAsync(data);
+                //}
 
-                response.Status = $"File {blob.FileName} Uploaded Successfully";
+                response.Status = $"File {blob.PhotoName} Uploaded Successfully";
                 response.Error = false;
-                response.Blob.Uri = client.Uri.AbsoluteUri;
-                response.Blob.Name = client.Name;
+                response.Blob.Uri = "Test Uri";
+                response.Blob.Name = blob.PhotoName;
 
                 var photo = new Photo
                 {
-                    Url = client.Uri.AbsoluteUri,
-                    Name = client.Name
+                    Url = "Client Url",
+                    Name = blob.PhotoName
                 };
 
                 _documentsDbContext.Photos.Add(photo);
                 _documentsDbContext.SaveChanges();
 
+                response.Blob.Id = photo.Id;
             }
             catch (RequestFailedException ex)
                when (ex.ErrorCode == BlobErrorCode.BlobAlreadyExists)
             {
-                response.Status = $"File with name {blob.FileName} already exists. Please use another name to store your file.";
+                response.Status = $"File with name {blob.PhotoName} already exists. Please use another name to store your file.";
                 response.Error = true;
                 return response;
             }
