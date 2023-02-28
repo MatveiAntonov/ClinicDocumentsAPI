@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using Documents.Application.Services;
+using Documents.Domain.DTOs.Photos;
 using Documents.Domain.Interfaces.Services;
 using Documents.WebApi.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace Documents.WebApi.Controllers
 {
@@ -54,12 +57,22 @@ namespace Documents.WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Receptionist")]
         public async Task<ActionResult<BlobResponseDto>> CreatePhoto([FromForm] IFormFile file)
         {
             if (file == null)
                 return BadRequest();
 
-            var blobResponse = await _photoService.UploadAsync(file, default(CancellationToken));
+			byte[] photoDto = { };
+			file.OpenReadStream().Read(photoDto);
+
+			var fileDto = new PhotoDto
+			{
+				PhotoData = photoDto,
+				PhotoName = file.Name
+			};
+
+			var blobResponse = await _photoService.UploadAsync(fileDto, default(CancellationToken));
 
             if (blobResponse.Error == false)
             {
@@ -73,6 +86,7 @@ namespace Documents.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Receptionist")]
         public async Task<ActionResult<BlobResponseDto>> DeletePhoto(int id)
         {
             var blobResponse = await _photoService.DeleteAsync(id, default(CancellationToken));
