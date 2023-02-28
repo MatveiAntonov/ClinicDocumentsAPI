@@ -20,7 +20,7 @@ namespace Documents.Persistence.Contexts
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfiguration(new DocumentsConfiguration());
-            builder.ApplyConfiguration(new PhotoConfiguration());
+            builder.ApplyConfiguration(new PhotosConfiguration());
             base.OnModelCreating(builder);
         }
     }
