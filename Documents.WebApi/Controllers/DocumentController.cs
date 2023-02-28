@@ -2,7 +2,9 @@
 using Documents.Domain.Interfaces.Services;
 using Documents.WebApi.Models.DTOs;
 using Documents.WebApi.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace Documents.WebApi.Controllers
 {
@@ -54,6 +56,7 @@ namespace Documents.WebApi.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Receptionist")]
         public async Task<ActionResult<BlobResponseDto>> CreateDocument([FromForm] FileViewModel model)
         {
             if (model.File == null)
@@ -74,6 +77,7 @@ namespace Documents.WebApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Receptionist")]
         public async Task<ActionResult<BlobResponseDto>> DeleteDocument(int id)
         {
             var blobResponse = await _documentService.DeleteAsync(id, default(CancellationToken));
