@@ -1,6 +1,5 @@
-﻿using Documents.Domain.Entities.EntitiesContentData;
-using Documents.Domain.Entities.EntitiesLocationData;
-using Microsoft.AspNetCore.Http;
+﻿using Documents.Domain.DTOs.Photos;
+using Documents.Domain.Entities.EntitiesContentData;
 
 namespace Documents.Domain.Interfaces.Repositories
 {
@@ -9,6 +8,6 @@ namespace Documents.Domain.Interfaces.Repositories
         Task<IEnumerable<Blob>> ListAsync(CancellationToken cancellationToken);
         Task<Blob?> DownloadAsync(string blobFileName, CancellationToken cancellationToken);
         Task<BlobResponse> DeleteAsync(string blobFileName, CancellationToken cancellationToken);
-        Task<BlobResponse> UploadAsync(IFormFile file, CancellationToken cancellationToken);
+        Task<BlobResponse> UploadAsync(PhotoDto file, CancellationToken cancellationToken);
     }
 }
