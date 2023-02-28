@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Documents.Persistence.EntityTypeConfigurations
 {
-    public class PhotoConfiguration : IEntityTypeConfiguration<Photo>
+    public class PhotosConfiguration : IEntityTypeConfiguration<Photo>
     {
         public void Configure(EntityTypeBuilder<Photo> builder)
         {
