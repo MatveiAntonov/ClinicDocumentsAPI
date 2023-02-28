@@ -1,4 +1,5 @@
-﻿using Documents.Domain.Entities.EntitiesContentData;
+﻿using Documents.Domain.DTOs.Photos;
+using Documents.Domain.Entities.EntitiesContentData;
 using Documents.Domain.Interfaces.Contexts;
 using Documents.Domain.Interfaces.Repositories;
 using Documents.Domain.Interfaces.Services;
@@ -45,7 +46,7 @@ namespace Documents.Application.Services
             return null;
         }
 
-        public async Task<BlobResponse> UploadAsync(IFormFile file, CancellationToken cancellationToken)
+        public async Task<BlobResponse> UploadAsync(PhotoDto file, CancellationToken cancellationToken)
         {
             return await _documentRepository.UploadAsync(file, cancellationToken);
         }
