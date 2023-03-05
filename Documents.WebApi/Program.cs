@@ -1,4 +1,5 @@
 using Documents.Application.Consumer.Events.Photos;
+using Documents.Application.Consumer.Events.Results;
 using Documents.Application.Services;
 using Documents.Domain.Interfaces.Services;
 using Documents.Persistence;
@@ -21,8 +22,15 @@ builder.Services.AddMassTransit(x =>
 	x.AddConsumer<PhotoAddedConsumer>();
 	x.AddConsumer<PhotoDeletedConsumer>();
 
+	x.AddConsumer<ResultCreatedConsumer>();
+
 	x.UsingRabbitMq((context, cfg) =>
 	{
+		cfg.Host("rabbit-mq", "/", h =>
+		{
+			h.Username("guest");
+			h.Password("guest");
+		});
 		cfg.ConfigureEndpoints(context);
 	});
 });
