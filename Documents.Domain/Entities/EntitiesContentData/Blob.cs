@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Documents.Domain.Entities.EntitiesContentData
+﻿namespace Documents.Domain.Entities.EntitiesContentData
 {
     public class Blob
     {
