@@ -1,4 +1,4 @@
-﻿using Documents.Domain.DTOs.Photos;
+﻿using Documents.Domain.DTOs;
 using Documents.Domain.Interfaces.Repositories;
 using Events;
 using MassTransit;
@@ -24,7 +24,7 @@ namespace Documents.Application.Consumer.Events.Photos
 					PhotoName = context.Message.PhotoName
 				};
 				var result = await _photoRepository.UploadAsync(photoDto, default(CancellationToken));
-				await context.RespondAsync(new
+				await context.RespondAsync(new PhotoAddedResponse
 				{
 					Id = result.Blob.Id,
 					PhotoUrl = result.Blob.Uri,
