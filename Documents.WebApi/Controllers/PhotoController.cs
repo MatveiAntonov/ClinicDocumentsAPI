@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Documents.Application.Services;
-using Documents.Domain.DTOs.Photos;
+using Documents.Domain.DTOs;
 using Documents.Domain.Interfaces.Services;
 using Documents.WebApi.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;

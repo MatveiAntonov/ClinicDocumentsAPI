@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Documents.Domain.DTOs;
+using Documents.Domain.Entities.EntitiesLocationData;
 using Documents.Domain.Interfaces.Services;
 using Documents.WebApi.Models.DTOs;
 using Documents.WebApi.Models.ViewModels;
@@ -62,7 +64,16 @@ namespace Documents.WebApi.Controllers
             if (model.File == null)
                 return BadRequest();
 
-            var blobResponse = await _documentService.UploadAsync(model.File, model.ResultId, default(CancellationToken));
+			byte[] resultDto = { };
+            model.File.OpenReadStream().Read(resultDto);
+
+			var fileDto = new ResultDto
+			{
+                Id = model.ResultId, 
+                Document = resultDto,
+			};
+
+			var blobResponse = await _documentService.UploadAsync(fileDto, default(CancellationToken));
 
             if (blobResponse.Error == false)
             {
