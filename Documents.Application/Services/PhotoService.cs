@@ -1,4 +1,4 @@
-﻿using Documents.Domain.DTOs.Photos;
+﻿using Documents.Domain.DTOs;
 using Documents.Domain.Entities.EntitiesContentData;
 using Documents.Domain.Interfaces.Contexts;
 using Documents.Domain.Interfaces.Repositories;

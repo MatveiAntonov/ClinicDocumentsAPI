@@ -1,16 +1,10 @@
-﻿using Documents.Domain.Entities;
+﻿using Documents.Domain.DTOs;
+using Documents.Domain.Entities;
 using Documents.Domain.Entities.EntitiesContentData;
 using Documents.Domain.Interfaces.Contexts;
 using Documents.Domain.Interfaces.Repositories;
 using Documents.Domain.Interfaces.Services;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Documents.Application.Services
 {
@@ -52,9 +46,9 @@ namespace Documents.Application.Services
             return null;
         }
 
-        public async Task<BlobResponse> UploadAsync(IFormFile file, int resultId, CancellationToken cancellationToken)
+        public async Task<BlobResponse> UploadAsync(ResultDto file, CancellationToken cancellationToken)
         {
-            return await _documentRepository.UploadAsync(file, resultId, cancellationToken);
+            return await _documentRepository.UploadAsync(file, cancellationToken);
         }
     }
 }
