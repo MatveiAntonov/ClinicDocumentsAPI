@@ -7,7 +7,7 @@ using Documents.Domain.Interfaces.Repositories;
 using Documents.Persistence.Contexts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
-using Documents.Domain.DTOs.Photos;
+using Documents.Domain.DTOs;
 
 namespace Documents.Persistence.Repositories
 {
