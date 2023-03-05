@@ -1,6 +1,7 @@
 ﻿using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Documents.Domain.DTOs;
 using Documents.Domain.Entities.EntitiesContentData;
 using Documents.Domain.Entities.EntitiesLocationData;
 using Documents.Domain.Interfaces.Repositories;
@@ -45,30 +46,30 @@ namespace Documents.Persistence.Repositories
             return files;
         }
 
-        public async Task<BlobResponse> UploadAsync(IFormFile blob, int ResultId, CancellationToken cancellationToken)
+        public async Task<BlobResponse> UploadAsync(ResultDto blob, CancellationToken cancellationToken)
         {
             BlobResponse response = new();
-            BlobContainerClient container = new BlobContainerClient(_storageConnectionString, _storageContainerName);
+            //BlobContainerClient container = new BlobContainerClient(_storageConnectionString, _storageContainerName);
 
             try
             {
-                BlobClient client = container.GetBlobClient(blob.FileName);
+                //BlobClient client = container.GetBlobClient($"{blob.Id}.pdf");
 
-                await using (Stream? data = blob.OpenReadStream())
-                {
-                    await client.UploadAsync(data);
-                }
+                //using MemoryStream data = new MemoryStream(blob.Document);
+                //{
+                //    await client.UploadAsync(data);
+                //}
 
-                response.Status = $"File {blob.FileName} Uploaded Successfully";
+                response.Status = $"File {blob.Id}.pdf Uploaded Successfully";
                 response.Error = false;
-                response.Blob.Uri = client.Uri.AbsoluteUri;
-                response.Blob.Name = client.Name;
+                response.Blob.Uri = "Test Uri";
+                response.Blob.Name = $"{blob.Id}.pdf";
 
                 var document = new Document
                 {
-                    Url = client.Uri.AbsoluteUri,
-                    Name = client.Name,
-                    ResultId = ResultId
+                    Url = "Client Url",
+                    Name = $"{blob.Id}.pdf",
+                    ResultId = blob.Id
                 };                                            
 
                 _documentsDbContext.Documents.Add(document);
@@ -78,7 +79,7 @@ namespace Documents.Persistence.Repositories
             catch (RequestFailedException ex)
                when (ex.ErrorCode == BlobErrorCode.BlobAlreadyExists)
             {
-                response.Status = $"File with name {blob.FileName} already exists. Please use another name to store your file.";
+                response.Status = $"File with name {blob.Id}.pdf already exists. Please use another name to store your file.";
                 response.Error = true;
                 return response;
             }
